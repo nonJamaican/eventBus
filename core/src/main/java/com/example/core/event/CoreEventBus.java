@@ -42,6 +42,10 @@ public class CoreEventBus implements EventBus {
         }
 
         for (final Method method : subscribeAnnotatedMethods) {
+            if (method.getParameterCount() != 1) {
+                throw new IllegalStateException("method ${subscriber::class.simpleName}#${method.name} should only have one parameter");
+            }
+
             Parameter parameter = method.getParameters()[0];
             Class<?> type = parameter.getType();
             subscriptions.put(type, new ArrayList<MethodSubscription>());
